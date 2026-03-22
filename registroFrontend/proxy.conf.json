@@ -1,0 +1,26 @@
+{
+  "/auth": {
+    "target": "http://localhost:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/auth": "/auth"
+    }
+  },
+  "/health": {
+    "target": "http://localhost:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/health": "/health"
+    }
+  },
+  "/api": {
+    "target": "http://localhost:5000",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": true
+  }
+}

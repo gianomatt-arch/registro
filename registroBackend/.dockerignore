@@ -1,0 +1,16 @@
+.git
+.gitignore
+.vscode
+.idea
+*.log
+*.pyc
+__pycache__/
+.pytest_cache/
+.env.local
+.env.*.local
+node_modules/
+venv/
+dist/
+build/
+*.egg-info/
+.DS_Store

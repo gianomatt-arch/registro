@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - registro-network
+
+  keycloak:
+    image: keycloak/keycloak:24.0.0
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak_password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_password
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY: edge
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    command: start-dev
+    networks:
+      - registro-network
+
+  # Backend Flask
+  flask:
+    build:
+      context: ./registroBackend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: development
+      DB_HOST: mysql
+      DB_USER: registro_user
+      DB_PASSWORD: registro_password
+      DB_NAME: registro_db
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_REALM: registro-realm
+      KEYCLOAK_CLIENT_ID: registro-backend
+      KEYCLOAK_CLIENT_SECRET: your-client-secret
+    depends_on:
+      - mysql
+      - keycloak
+    networks:
+      - registro-network
+    volumes:
+      - ./registroBackend:/app
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: registro_db
+      MYSQL_USER: registro_user
+      MYSQL_PASSWORD: registro_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - registro-network
+
+volumes:
+  postgres_data:
+  mysql_data:
+
+networks:
+  registro-network:
+    driver: bridge

@@ -1,0 +1,94 @@
+<div class="docente-container">
+  <nav class="navbar">
+    <div class="navbar-content">
+      <h1>📚 Registro Docente</h1>
+      <button (click)="logout()" class="logout-btn">Logout</button>
+    </div>
+  </nav>
+
+  <div class="content">
+    <div class="section">
+      <div class="section-header">
+        <h2>Inserisci Nuovo Voto</h2>
+        <button (click)="toggleForm()" class="btn btn-primary">
+          {{ showForm ? 'Annulla' : 'Nuovo Voto' }}
+        </button>
+      </div>
+
+      <form *ngIf="showForm" class="voto-form">
+        <div class="form-group">
+          <label for="studente">Seleziona Studente:</label>
+          <select 
+            id="studente"
+            [(ngModel)]="formData.nome_studente" 
+            name="nome_studente"
+            required
+          >
+            <option value="">-- Scegli uno studente --</option>
+            <option *ngFor="let studente of studenti" [value]="studente.username">
+              {{ studente.nome }} {{ studente.cognome }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="materia">Materia:</label>
+          <input 
+            id="materia"
+            type="text" 
+            [(ngModel)]="formData.materia" 
+            name="materia"
+            placeholder="Es. Matematica, Italiano, etc."
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="voto">Voto:</label>
+          <input 
+            id="voto"
+            type="number" 
+            [(ngModel)]="formData.voto" 
+            name="voto"
+            min="0"
+            max="10"
+            step="0.5"
+            placeholder="Es. 8.5"
+            required
+          />
+        </div>
+
+        <button 
+          type="button"
+          (click)="submitForm()" 
+          class="btn btn-success"
+          [disabled]="isLoading"
+        >
+          {{ isLoading ? 'Salvataggio...' : 'Salva Voto' }}
+        </button>
+      </form>
+    </div>
+
+    <div class="section">
+      <h2>Elenco Voti</h2>
+      <div *ngIf="isLoading" class="loading">Caricamento...</div>
+      
+      <div *ngIf="!isLoading && voti.length === 0" class="empty-state">
+        <p>Nessun voto inserito ancora</p>
+      </div>
+
+      <div *ngIf="!isLoading && voti.length > 0" class="voti-list">
+        <div *ngFor="let voto of voti" class="voto-card">
+          <div class="voto-header">
+            <h3>{{ voto.nome }} {{ voto.cognome }}</h3>
+            <span class="voto-badge">{{ voto.voto }}/10</span>
+          </div>
+          <div class="voto-info">
+            <p><strong>Materia:</strong> {{ voto.materia }}</p>
+            <p><strong>Data:</strong> {{ voto.data_inserimento | date:'short' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

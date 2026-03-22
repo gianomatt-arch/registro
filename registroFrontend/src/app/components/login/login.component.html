@@ -1,0 +1,55 @@
+<div class="login-container">
+  <div class="login-background">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+  </div>
+
+  <div class="login-content">
+    <div class="login-card">
+      <div class="logo">📚</div>
+      <h1>Registro Elettronico</h1>
+      <p class="subtitle">Sistema di gestione voti scolastici</p>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <div class="accounts-section">
+        <h2>Account di Test</h2>
+        <p class="hint">Seleziona un account per accedere</p>
+
+        <div class="accounts-grid">
+          <button 
+            *ngFor="let account of testAccounts"
+            (click)="loginWithTestAccount(account.username, account.password)"
+            [disabled]="isLoading"
+            class="account-btn"
+            [ngClass]="{'docente-btn': account.role === 'Docente', 'studente-btn': account.role === 'Studente'}"
+          >
+            <div class="account-icon">
+              {{ account.role === 'Docente' ? '👨‍🏫' : '👨‍🎓' }}
+            </div>
+            <div class="account-info">
+              <div class="account-role">{{ account.role }}</div>
+              <div class="account-username">{{ account.username }}</div>
+            </div>
+            <div class="account-arrow">→</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="credentials-info">
+        <p><strong>Password:</strong> password123</p>
+      </div>
+
+      <div class="loading-indicator" *ngIf="isLoading">
+        ⏳ Autenticazione in corso...
+      </div>
+    </div>
+
+    <div class="info-box">
+      <p>👉 <strong>Demo:</strong> Questa è una versione demo con account di test. In produzione userai Keycloak per l'autenticazione OAuth2.</p>
+    </div>
+  </div>
+</div>

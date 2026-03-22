@@ -1,0 +1,41 @@
+<div class="access-denied-container">
+  <div class="floating-icons">
+    <div class="icon icon1">🔐</div>
+    <div class="icon icon2">❌</div>
+    <div class="icon icon3">⛔</div>
+  </div>
+
+  <div class="denied-content">
+    <div class="status-code">403</div>
+    <h1>Accesso Negato!</h1>
+    <p class="subtitle">Non hai i permessi necessari per accedere a questa pagina.</p>
+    
+    <div class="message-box">
+      <p>🚫 Sembra che tu stia cercando di accedere a una risorsa riservata a un ruolo diverso dal tuo.</p>
+      
+      <ul class="role-info">
+        <li><strong>Docente?</strong> Accedi al pannello amministrativo</li>
+        <li><strong>Studente?</strong> Accedi al tuo pannello voti personale</li>
+      </ul>
+    </div>
+
+    <div class="action-buttons">
+      <button (click)="goHome()" class="btn btn-primary">
+        Torna alla Home
+      </button>
+      <button (click)="goBack()" class="btn btn-secondary">
+        Indietro
+      </button>
+    </div>
+
+    <div class="footer-message">
+      <p>Se pensi che sia un errore, contatta l'amministratore.</p>
+    </div>
+  </div>
+
+  <div class="animated-bg">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+  </div>
+</div>

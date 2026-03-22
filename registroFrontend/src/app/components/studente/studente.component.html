@@ -1,0 +1,72 @@
+<div class="studente-container">
+  <nav class="navbar">
+    <div class="navbar-content">
+      <h1>📖 I Miei Voti</h1>
+      <button (click)="logout()" class="logout-btn">Logout</button>
+    </div>
+  </nav>
+
+  <div class="content">
+    <!-- Profilo Studente -->
+    <div class="profile-section" *ngIf="profile">
+      <div class="profile-card">
+        <div class="profile-avatar">{{ profile.nome.charAt(0) }}{{ profile.cognome.charAt(0) }}</div>
+        <div class="profile-info">
+          <h2>{{ profile.nome }} {{ profile.cognome }}</h2>
+          <p class="email">{{ profile.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistiche -->
+    <div class="stats-section" *ngIf="voti.length > 0">
+      <div class="stat-card">
+        <div class="stat-value">{{ voti.length }}</div>
+        <div class="stat-label">Voti Totali</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ getMedia() }}</div>
+        <div class="stat-label">Media</div>
+      </div>
+    </div>
+
+    <!-- Elenco Voti -->
+    <div class="voti-section">
+      <h2>Dettaglio Voti</h2>
+      
+      <div *ngIf="isLoading" class="loading">
+        ⏳ Caricamento dei voti...
+      </div>
+      
+      <div *ngIf="!isLoading && voti.length === 0" class="empty-state">
+        <div class="empty-icon">📝</div>
+        <p>Non hai ancora nessun voto registrato</p>
+      </div>
+
+      <div *ngIf="!isLoading && voti.length > 0" class="voti-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Materia</th>
+              <th>Voto</th>
+              <th>Data</th>
+              <th>Docente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let voto of voti" class="voto-row">
+              <td class="materia-cell">{{ voto.materia }}</td>
+              <td class="voto-cell">
+                <span class="voto-badge" [ngClass]="{'excellent': voto.voto >= 9, 'good': voto.voto >= 7, 'fair': voto.voto >= 5}">
+                  {{ voto.voto }}
+                </span>
+              </td>
+              <td class="data-cell">{{ voto.data_inserimento | date:'short' }}</td>
+              <td class="docente-cell">{{ voto.docente_nome }} {{ voto.docente_cognome }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
